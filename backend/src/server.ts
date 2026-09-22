@@ -1,25 +1,27 @@
 import Fastify from 'fastify';
 import { healthRoutes } from './routes/health.routes.js';
+import { checkDatabaseConnection } from './database/connection.js';
 
 const server = Fastify({
   logger: true,
 });
 
-await server.register(healthRoutes, {
-  prefix: '/api',
-});
+const SERVER_PORT = Number(process.env.SERVER_PORT ?? 3000);
+const SERVER_HOST = process.env.SERVER_HOST ?? 'localhost';
+const API_PREFIX = process.env.API_PREFIX ?? '/api';
 
-server.get('/health', async () => {
-  return {
-    status: 'ok',
-  };
+await server.register(healthRoutes, {
+  prefix: API_PREFIX,
 });
 
 const start = async (): Promise<void> => {
   try {
+    await checkDatabaseConnection();
+    server.log.info('PostgreSQL connection successful');
+
     await server.listen({
-      port: 3000,
-      host: 'localhost',
+      port: SERVER_PORT,
+      host: SERVER_HOST,
     });
   } catch (error) {
     server.log.error(error);
