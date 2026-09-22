@@ -1,7 +1,12 @@
 import Fastify from 'fastify';
+import { healthRoutes } from './routes/health.routes.js';
 
 const server = Fastify({
   logger: true,
+});
+
+await server.register(healthRoutes, {
+  prefix: '/api',
 });
 
 server.get('/health', async () => {
