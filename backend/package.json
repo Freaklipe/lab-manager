@@ -1,0 +1,24 @@
+{
+  "name": "lab-manager-backend",
+  "version": "1.0.0",
+  "description": "Responsable de exponer la API REST y ejecutar la lógica de negocio de la aplicación.",
+  "license": "MIT",
+  "author": "freakipe",
+  "type": "module",
+  "main": "app.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "dev": "tsx src/server.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "fastify": "^5.12.5"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.2",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}
