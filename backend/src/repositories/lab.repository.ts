@@ -13,7 +13,7 @@ export interface CreateLabData {
   description?: string;
 }
 
-// Select
+// Get ALL
 export const findAllLabs = async (): Promise<Lab[]> => {
   const result = await pool.query<Lab>(
     `
@@ -31,7 +31,7 @@ export const findAllLabs = async (): Promise<Lab[]> => {
   return result.rows;
 };
 
-// Register
+// Create One
 export const createLab = async (
   data: CreateLabData,
 ): Promise<Lab> => {
@@ -59,4 +59,25 @@ export const createLab = async (
   }
 
   return lab;
+};
+
+// Get one
+export const findLabById = async (
+  id: number,
+): Promise<Lab | null> => {
+  const result = await pool.query<Lab>(
+    `
+      SELECT
+        id,
+        name,
+        description,
+        created_at,
+        updated_at
+      FROM labs
+      WHERE id = $1;
+    `,
+    [id],
+  );
+
+  return result.rows[0] ?? null;
 };

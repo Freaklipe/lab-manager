@@ -15,3 +15,17 @@ export const createLabSchema = {
     },
   },
 };
+
+export const getLabByIdSchema = {
+  params: {
+    type: 'object',
+    required: ['id'],
+    additionalProperties: false,
+    properties: {
+      id: {
+        type: 'string',
+        pattern: '^[0-9]+$',
+      },
+    },
+  },
+};

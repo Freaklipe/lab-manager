@@ -1,13 +1,25 @@
 import type { FastifyInstance } from 'fastify';
 import {
-  createLabController,
-  getLabsController
+  getLabsController,
+  getLabByIdController,
+  createLabController
 } from '../controllers/lab.controller.js';
-import { createLabSchema } from '../schemas/lab.schema.js'
+import {
+  createLabSchema,
+  getLabByIdSchema
+} from '../schemas/lab.schema.js'
 
 export const labRoutes = async (
   server: FastifyInstance,
 ): Promise<void> => {
+  server.get('/labs', getLabsController);
+  server.get(
+    '/labs/:id',
+    {
+      schema: getLabByIdSchema
+    },
+    getLabByIdController
+  );
   server.post(
     '/labs',
     {
@@ -15,5 +27,4 @@ export const labRoutes = async (
     },
     createLabController
   );
-  server.get('/labs', getLabsController);
 };
