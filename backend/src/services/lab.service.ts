@@ -3,6 +3,7 @@ import {
   findAllLabs,
   findLabById,
   updateLab,
+  deleteLab,
   type CreateLabData,
   type Lab,
   type UpdateLabData
@@ -29,4 +30,10 @@ export const updateExistingLab = async (
   data: UpdateLabData,
 ): Promise<Lab | null> => {
   return updateLab(id, data);
+};
+
+export const deleteExistingLab = async (
+  id: number,
+): Promise<boolean> => {
+  return deleteLab(id);
 };

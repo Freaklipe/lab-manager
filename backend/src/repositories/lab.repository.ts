@@ -116,3 +116,18 @@ export const updateLab = async (
 
   return result.rows[0] ?? null;
 };
+
+// DELETE
+export const deleteLab = async (
+  id: number,
+): Promise<boolean> => {
+  const result = await pool.query(
+    `
+      DELETE FROM labs
+      WHERE id = $1;
+    `,
+    [id],
+  );
+
+  return result.rowCount === 1;
+};

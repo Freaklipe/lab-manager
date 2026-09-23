@@ -3,7 +3,8 @@ import {
   getLabsController,
   getLabByIdController,
   createLabController,
-  patchLabController
+  patchLabController,
+  deleteLabController
 } from '../controllers/lab.controller.js';
 import {
   createLabSchema,
@@ -14,7 +15,7 @@ import {
 export const labRoutes = async (
   server: FastifyInstance,
 ): Promise<void> => {
-  server.get('/labs', getLabsController);
+  server.get('/labs',getLabsController);
   server.get(
     '/labs/:id',
     {
@@ -35,5 +36,12 @@ export const labRoutes = async (
       schema: patchLabSchema
     },
     patchLabController
+  );
+  server.delete(
+    '/labs/:id',
+    {
+      schema: getLabByIdSchema,
+    },
+    deleteLabController,
   );
 };

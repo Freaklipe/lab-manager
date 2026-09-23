@@ -3,7 +3,8 @@ import {
   createNewLab,
   getLabs,
   getLabById,
-  updateExistingLab
+  updateExistingLab,
+  deleteExistingLab
 } from '../services/lab.service.js';
 
 interface CreateLabRequest {
@@ -81,4 +82,25 @@ export const patchLabController = async (
   }
 
   await reply.send(lab);
+};
+
+export const deleteLabController = async (
+  request: FastifyRequest<{
+    Params: GetLabParams;
+  }>,
+  reply: FastifyReply,
+): Promise<void> => {
+  const id = Number(request.params.id);
+
+  const deleted = await deleteExistingLab(id);
+
+  if (!deleted) {
+    await reply.code(404).send({
+      error: 'Lab not found',
+    });
+
+    return;
+  }
+
+  await reply.code(204).send();
 };
