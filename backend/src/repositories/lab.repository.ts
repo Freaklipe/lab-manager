@@ -13,6 +13,11 @@ export interface CreateLabData {
   description?: string;
 }
 
+export interface UpdateLabData {
+  name?: string;
+  description?: string;
+}
+
 // Get ALL
 export const findAllLabs = async (): Promise<Lab[]> => {
   const result = await pool.query<Lab>(
@@ -77,6 +82,36 @@ export const findLabById = async (
       WHERE id = $1;
     `,
     [id],
+  );
+
+  return result.rows[0] ?? null;
+};
+
+// PATCH
+export const updateLab = async (
+  id: number,
+  data: UpdateLabData,
+): Promise<Lab | null> => {
+  const result = await pool.query<Lab>(
+    `
+      UPDATE labs
+      SET
+        name = COALESCE($1, name),
+        description = COALESCE($2, description),
+        updated_at = NOW()
+      WHERE id = $3
+      RETURNING
+        id,
+        name,
+        description,
+        created_at,
+        updated_at;
+    `,
+    [
+      data.name ?? null,
+      data.description ?? null,
+      id,
+    ],
   );
 
   return result.rows[0] ?? null;

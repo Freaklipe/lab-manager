@@ -2,11 +2,13 @@ import type { FastifyInstance } from 'fastify';
 import {
   getLabsController,
   getLabByIdController,
-  createLabController
+  createLabController,
+  patchLabController
 } from '../controllers/lab.controller.js';
 import {
   createLabSchema,
-  getLabByIdSchema
+  getLabByIdSchema,
+  patchLabSchema
 } from '../schemas/lab.schema.js'
 
 export const labRoutes = async (
@@ -26,5 +28,12 @@ export const labRoutes = async (
       schema: createLabSchema
     },
     createLabController
+  );
+  server.patch(
+    '/labs/:id',
+    {
+      schema: patchLabSchema
+    },
+    patchLabController
   );
 };

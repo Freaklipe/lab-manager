@@ -2,7 +2,8 @@ import type { FastifyReply, FastifyRequest } from 'fastify';
 import {
   createNewLab,
   getLabs,
-  getLabById
+  getLabById,
+  updateExistingLab
 } from '../services/lab.service.js';
 
 interface CreateLabRequest {
@@ -12,6 +13,11 @@ interface CreateLabRequest {
 
 interface GetLabParams {
   id: string;
+}
+
+interface PatchLabRequest {
+  name?: string;
+  description?: string;
 }
 
 export const createLabController = async (
@@ -43,6 +49,28 @@ export const getLabByIdController = async (
   const id = Number(request.params.id);
 
   const lab = await getLabById(id);
+
+  if (!lab) {
+    await reply.code(404).send({
+      error: 'Lab not found',
+    });
+
+    return;
+  }
+
+  await reply.send(lab);
+};
+
+export const patchLabController = async (
+  request: FastifyRequest<{
+    Params: GetLabParams;
+    Body: PatchLabRequest;
+  }>,
+  reply: FastifyReply,
+): Promise<void> => {
+  const id = Number(request.params.id);
+
+  const lab = await updateExistingLab(id, request.body);
 
   if (!lab) {
     await reply.code(404).send({
