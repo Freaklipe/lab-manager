@@ -2,6 +2,7 @@ import Fastify from 'fastify';
 import { healthRoutes } from './routes/health.routes.js';
 import { labRoutes } from './routes/lab.routes.js';
 import { checkDatabaseConnection } from './database/connection.js';
+import { errorHandler } from './errors/error.handler.js';
 
 const server = Fastify({
   logger: true,
@@ -11,6 +12,8 @@ const server = Fastify({
     },
   },
 });
+
+server.setErrorHandler(errorHandler);
 
 const SERVER_PORT = Number(process.env.SERVER_PORT ?? 3000);
 const SERVER_HOST = process.env.SERVER_HOST ?? 'localhost';

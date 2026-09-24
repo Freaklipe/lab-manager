@@ -1,4 +1,5 @@
 import pool from '../database/connection.js';
+import { mapPostgresError } from '../errors/pg-error.mapper.js';
 
 export interface Lab {
   id: number;
@@ -40,30 +41,34 @@ export const findAllLabs = async (): Promise<Lab[]> => {
 export const createLab = async (
   data: CreateLabData,
 ): Promise<Lab> => {
-  const result = await pool.query<Lab>(
-    `
-      INSERT INTO labs (
-        name,
-        description
-      )
-      VALUES ($1, $2)
-      RETURNING
-        id,
-        name,
-        description,
-        created_at,
-        updated_at;
-    `,
-    [data.name, data.description ?? null],
-  );
+  try {
+    const result = await pool.query<Lab>(
+      `
+        INSERT INTO labs (
+          name,
+          description
+        )
+        VALUES ($1, $2)
+        RETURNING
+          id,
+          name,
+          description,
+          created_at,
+          updated_at;
+      `,
+      [data.name, data.description ?? null],
+    );
 
-  const lab = result.rows[0];
+    const lab = result.rows[0];
 
-  if (!lab) {
-    throw new Error('Failed to create lab');
+    if (!lab) {
+      throw new Error('Failed to create lab');
+    }
+
+    return lab;
+  } catch (error) {
+    throw mapPostgresError(error);
   }
-
-  return lab;
 };
 
 // Get one
