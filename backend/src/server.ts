@@ -1,8 +1,9 @@
 import Fastify from 'fastify';
-import { healthRoutes } from './routes/health.routes.js';
-import { labRoutes } from './routes/lab.routes.js';
 import { checkDatabaseConnection } from './database/connection.js';
 import { errorHandler } from './errors/error.handler.js';
+import { healthRoutes } from './routes/health.routes.js';
+import { labRoutes } from './routes/lab.routes.js';
+import { serverRoutes } from './routes/server.routes.js';
 
 const server = Fastify({
   logger: true,
@@ -24,6 +25,10 @@ await server.register(healthRoutes, {
 });
 
 await server.register(labRoutes, {
+  prefix: API_PREFIX,
+});
+
+await server.register(serverRoutes, {
   prefix: API_PREFIX,
 });
 

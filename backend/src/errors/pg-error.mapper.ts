@@ -20,6 +20,12 @@ export const mapPostgresError = (error: unknown): unknown => {
         'The operation conflicts with an existing resource',
       );
     }
+
+    if (error.code === '23001') {
+      return new ResourceConflictError(
+        'The operation conflicts with an existing resource',
+      );
+    }
   }
 
   return error;

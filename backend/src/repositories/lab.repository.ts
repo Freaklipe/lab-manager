@@ -126,13 +126,18 @@ export const updateLab = async (
 export const deleteLab = async (
   id: number,
 ): Promise<boolean> => {
-  const result = await pool.query(
-    `
-      DELETE FROM labs
-      WHERE id = $1;
-    `,
-    [id],
-  );
 
-  return result.rowCount === 1;
+  try {
+    const result = await pool.query(
+      `
+        DELETE FROM labs
+        WHERE id = $1;
+      `,
+      [id],
+    );
+
+    return result.rowCount === 1;
+  } catch (error) {
+    throw mapPostgresError(error);
+  }
 };
