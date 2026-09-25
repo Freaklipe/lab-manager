@@ -6,6 +6,7 @@ import { labRoutes } from './routes/lab.routes.js';
 import { serverRoutes } from './routes/server.routes.js';
 import { serviceRoutes } from './routes/service.routes.js';
 import { projectRoutes } from './routes/project.routes.js';
+import { deploymentRoutes } from './routes/deployment.routes.js';
 
 const server = Fastify({
   logger: true,
@@ -39,6 +40,10 @@ await server.register(serviceRoutes, {
 });
 
 await server.register(projectRoutes, {
+  prefix: API_PREFIX,
+});
+
+await server.register(deploymentRoutes, {
   prefix: API_PREFIX,
 });
 
