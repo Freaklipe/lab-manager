@@ -165,13 +165,17 @@ export const updateServer = async (
 export const deleteServer = async (
   id: number,
 ): Promise<boolean> => {
-  const result = await pool.query(
-    `
-      DELETE FROM servers
-      WHERE id = $1;
-    `,
-    [id],
-  );
+  try {
+    const result = await pool.query(
+      `
+        DELETE FROM servers
+        WHERE id = $1;
+      `,
+      [id],
+    );
 
-  return result.rowCount === 1;
+    return result.rowCount === 1;
+  } catch (error) {
+    throw mapPostgresError(error);
+  }
 };

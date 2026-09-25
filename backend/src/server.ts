@@ -4,6 +4,7 @@ import { errorHandler } from './errors/error.handler.js';
 import { healthRoutes } from './routes/health.routes.js';
 import { labRoutes } from './routes/lab.routes.js';
 import { serverRoutes } from './routes/server.routes.js';
+import { serviceRoutes } from './routes/service.routes.js';
 
 const server = Fastify({
   logger: true,
@@ -29,6 +30,10 @@ await server.register(labRoutes, {
 });
 
 await server.register(serverRoutes, {
+  prefix: API_PREFIX,
+});
+
+await server.register(serviceRoutes, {
   prefix: API_PREFIX,
 });
 
