@@ -1,3 +1,4 @@
+import { logger } from '../config/logger.js';
 import {
   createLab,
   findAllLabs,
@@ -6,7 +7,7 @@ import {
   deleteLab,
   type CreateLabData,
   type Lab,
-  type UpdateLabData
+  type UpdateLabData,
 } from '../repositories/lab.repository.js';
 
 export const getLabs = async (): Promise<Lab[]> => {
@@ -16,7 +17,17 @@ export const getLabs = async (): Promise<Lab[]> => {
 export const createNewLab = async (
   data: CreateLabData,
 ): Promise<Lab> => {
-  return createLab(data);
+  const lab = await createLab(data);
+
+  logger.info(
+    {
+      labId: lab.id,
+      labName: lab.name,
+    },
+    'Lab created',
+  );
+
+  return lab;
 };
 
 export const getLabById = async (
@@ -29,11 +40,32 @@ export const updateExistingLab = async (
   id: number,
   data: UpdateLabData,
 ): Promise<Lab | null> => {
-  return updateLab(id, data);
+  const lab = await updateLab(id, data);
+
+  if (lab) {
+    logger.info(
+      {
+        labId: lab.id,
+      },
+      'Lab updated',
+    );
+  }
+  return lab;
 };
 
 export const deleteExistingLab = async (
   id: number,
 ): Promise<boolean> => {
-  return deleteLab(id);
+  const deleted = await deleteLab(id);
+
+  if (deleted) {
+    logger.info(
+      {
+        labId: id,
+      },
+      'Lab deleted',
+    );
+  }
+
+  return deleted;
 };

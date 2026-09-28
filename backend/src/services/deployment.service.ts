@@ -1,3 +1,4 @@
+import { logger } from '../config/logger.js';
 import {
   createDeployment,
   findAllDeployments,
@@ -16,7 +17,17 @@ export const getDeployments = async (): Promise<Deployment[]> => {
 export const createNewDeployment = async (
   data: CreateDeploymentData,
 ): Promise<Deployment> => {
-  return createDeployment(data);
+  const deployment = await createDeployment(data);
+
+  logger.info(
+    {
+      deploymentId: deployment.id,
+      projectId: deployment.project_id,
+    },
+    'Deployment created',
+  );
+
+  return deployment;
 };
 
 export const getDeploymentById = async (
@@ -29,11 +40,33 @@ export const updateExistingDeployment = async (
   id: number,
   data: UpdateDeploymentData,
 ): Promise<Deployment | null> => {
-  return updateDeployment(id, data);
+  const deployment = await updateDeployment(id, data);
+
+  if (deployment) {
+    logger.info(
+      {
+        deploymentId: deployment.id,
+      },
+      'Deployment updated',
+    );
+  }
+
+  return deployment;
 };
 
 export const deleteExistingDeployment = async (
   id: number,
 ): Promise<boolean> => {
-  return deleteDeployment(id);
+  const deleted = await deleteDeployment(id);
+
+  if (deleted) {
+    logger.info(
+      {
+        deploymentId: id,
+      },
+      'Deployment deleted',
+    );
+  }
+
+  return deleted;
 };

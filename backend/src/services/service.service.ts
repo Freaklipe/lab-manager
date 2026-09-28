@@ -1,3 +1,4 @@
+import { logger } from '../config/logger.js';
 import {
   createService,
   findAllServices,
@@ -16,7 +17,17 @@ export const getServices = async (): Promise<Service[]> => {
 export const createNewService = async (
   data: CreateServiceData,
 ): Promise<Service> => {
-  return createService(data);
+  const service = await createService(data);
+
+  logger.info(
+    {
+      serviceId: service.id,
+      serverId: service.server_id,
+    },
+    'Service created',
+  );
+
+  return service;
 };
 
 export const getServiceById = async (
@@ -29,11 +40,33 @@ export const updateExistingService = async (
   id: number,
   data: UpdateServiceData,
 ): Promise<Service | null> => {
-  return updateService(id, data);
+  const service = await updateService(id, data);
+
+  if (service) {
+    logger.info(
+      {
+        serviceId: service.id,
+      },
+      'Service updated',
+    );
+  }
+
+  return service;
 };
 
 export const deleteExistingService = async (
   id: number,
 ): Promise<boolean> => {
-  return deleteService(id);
+  const deleted = await deleteService(id);
+
+  if (deleted) {
+    logger.info(
+      {
+        serviceId: id,
+      },
+      'Service deleted',
+    );
+  }
+
+  return deleted;
 };
