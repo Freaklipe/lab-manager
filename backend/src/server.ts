@@ -1,4 +1,5 @@
 import Fastify from 'fastify';
+import { loggerConfig } from './config/logger.js';
 import { checkDatabaseConnection } from './database/connection.js';
 import { errorHandler } from './errors/error.handler.js';
 import { healthRoutes } from './routes/health.routes.js';
@@ -9,7 +10,7 @@ import { projectRoutes } from './routes/project.routes.js';
 import { deploymentRoutes } from './routes/deployment.routes.js';
 
 const server = Fastify({
-  logger: true,
+  logger: loggerConfig,
   ajv: {
     customOptions: {
       removeAdditional: false,

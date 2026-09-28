@@ -1,3 +1,4 @@
+import { logger } from '../config/logger.js';
 import {
   createProject,
   findAllProjects,
@@ -16,7 +17,17 @@ export const getProjects = async (): Promise<Project[]> => {
 export const createNewProject = async (
   data: CreateProjectData,
 ): Promise<Project> => {
-  return createProject(data);
+  const project = await createProject(data);
+
+  logger.info(
+    {
+      projectId: project.id,
+      projectName: project.name,
+    },
+    'Project created',
+  );
+
+  return project;
 };
 
 export const getProjectById = async (
@@ -29,11 +40,33 @@ export const updateExistingProject = async (
   id: number,
   data: UpdateProjectData,
 ): Promise<Project | null> => {
-  return updateProject(id, data);
+  const project = await updateProject(id, data);
+
+  if (project) {
+    logger.info(
+      {
+        projectId: project.id,
+      },
+      'Project updated',
+    );
+  }
+
+  return project;
 };
 
 export const deleteExistingProject = async (
   id: number,
 ): Promise<boolean> => {
-  return deleteProject(id);
+  const deleted = await deleteProject(id);
+
+  if (deleted) {
+    logger.info(
+      {
+        projectId: id,
+      },
+      'Project deleted',
+    );
+  }
+
+  return deleted;
 };
