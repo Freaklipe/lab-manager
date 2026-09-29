@@ -1,13 +1,16 @@
 import pg from 'pg';
+import { config } from '../config/env.js';
 
 const { Pool } = pg;
 
+const { host, port, database, user, password } = config.database;
+
 const pool = new Pool({
-  host: 'localhost',
-  port: Number(process.env.POSTGRES_PORT),
-  database: process.env.POSTGRES_DB,
-  user: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD,
+  host,
+  port,
+  database,
+  user,
+  password,
 });
 
 export const checkDatabaseConnection = async (): Promise<void> => {

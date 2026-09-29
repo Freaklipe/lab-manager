@@ -1,4 +1,5 @@
 import Fastify from 'fastify';
+import { config } from './config/env.js';
 import { loggerConfig } from './config/logger.js';
 import { checkDatabaseConnection } from './database/connection.js';
 import { errorHandler } from './errors/error.handler.js';
@@ -20,32 +21,31 @@ const server = Fastify({
 
 server.setErrorHandler(errorHandler);
 
-const SERVER_PORT = Number(process.env.SERVER_PORT ?? 3000);
-const SERVER_HOST = process.env.SERVER_HOST ?? 'localhost';
-const API_PREFIX = process.env.API_PREFIX ?? '/api';
+const { host, port } = config.server;
+const { prefix } = config.api;
 
 await server.register(healthRoutes, {
-  prefix: API_PREFIX,
+  prefix,
 });
 
 await server.register(labRoutes, {
-  prefix: API_PREFIX,
+  prefix,
 });
 
 await server.register(serverRoutes, {
-  prefix: API_PREFIX,
+  prefix,
 });
 
 await server.register(serviceRoutes, {
-  prefix: API_PREFIX,
+  prefix,
 });
 
 await server.register(projectRoutes, {
-  prefix: API_PREFIX,
+  prefix,
 });
 
 await server.register(deploymentRoutes, {
-  prefix: API_PREFIX,
+  prefix,
 });
 
 const start = async (): Promise<void> => {
@@ -54,8 +54,8 @@ const start = async (): Promise<void> => {
     server.log.info('PostgreSQL connection successful');
 
     await server.listen({
-      port: SERVER_PORT,
-      host: SERVER_HOST,
+      port,
+      host,
     });
   } catch (error) {
     server.log.error(error);

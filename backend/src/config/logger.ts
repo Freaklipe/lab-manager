@@ -1,12 +1,13 @@
 import pino from 'pino';
 import type { FastifyLoggerOptions } from 'fastify';
+import { config } from './env.js';
 
-const logLevel = process.env.LOG_LEVEL ?? 'info';
+const { level } = config.logger;
 
 export const loggerConfig: FastifyLoggerOptions = {
-  level: logLevel,
+  level,
 };
 
 export const logger = pino({
-  level: logLevel,
+  level,
 });
