@@ -27,3 +27,10 @@ export class ResourceConflictError extends AppError {
     this.name = 'ResourceConflictError';
   }
 }
+
+export class DatabaseError extends AppError {
+  constructor() {
+    super('An internal database error occurred', 500);
+    this.name = 'DatabaseError';
+  }
+}

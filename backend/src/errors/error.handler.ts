@@ -14,20 +14,41 @@ export const errorHandler = (
   };
 
   if (error instanceof AppError) {
-    logger.warn(
+    if (error.statusCode >= 400 && error.statusCode < 500) {
+      logger.warn(
+        {
+          ...logContext,
+          statusCode: error.statusCode,
+          errorName: error.name,
+          message: error.message,
+        },
+        'Application error',
+      );
+
+      void reply.code(error.statusCode).send({
+        statusCode: error.statusCode,
+        error: error.name,
+        message: error.message,
+      });
+
+      return;
+    }
+
+    logger.error(
       {
         ...logContext,
         statusCode: error.statusCode,
         errorName: error.name,
         message: error.message,
+        stack: error.stack,
       },
-      'Application error',
+      'Internal application error',
     );
 
-    void reply.code(error.statusCode).send({
-      statusCode: error.statusCode,
-      error: error.name,
-      message: error.message,
+    void reply.code(500).send({
+      statusCode: 500,
+      error: 'Internal Server Error',
+      message: 'An unexpected error occurred',
     });
 
     return;
