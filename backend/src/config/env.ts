@@ -41,4 +41,13 @@ export const config = {
   logger: {
     level: process.env.LOG_LEVEL ?? 'info',
   },
+
+  cors: {
+    origin: process.env.CORS_ORIGIN ?? 'http://localhost:4200',
+  },
+
+  rateLimit: {
+    max: Number(process.env.RATE_LIMIT_MAX ?? 100),
+    timeWindow: process.env.RATE_LIMIT_TIME_WINDOW ?? '1 minute',
+  },
 } as const;

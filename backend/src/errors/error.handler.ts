@@ -53,6 +53,36 @@ export const errorHandler = (
     return;
   }
 
+  if (
+    'statusCode' in error &&
+    typeof error.statusCode === 'number' &&
+    error.statusCode >= 400 &&
+    error.statusCode < 500
+  ) {
+    const errorName =
+      error.statusCode === 429
+        ? 'Too Many Requests'
+        : error.name;
+
+    logger.warn(
+      {
+        ...logContext,
+        statusCode: error.statusCode,
+        errorName,
+        message: error.message,
+      },
+      'HTTP client error',
+    );
+
+    void reply.code(error.statusCode).send({
+      statusCode: error.statusCode,
+      error: errorName,
+      message: error.message,
+    });
+
+    return;
+  }
+
   logger.error(
     {
       ...logContext,
