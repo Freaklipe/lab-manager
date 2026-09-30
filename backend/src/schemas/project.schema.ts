@@ -18,6 +18,7 @@ export const createProjectSchema = {
       },
       description: {
         type: 'string',
+        maxLength: 500,
       },
       repository_url: {
         type: 'string',
@@ -66,6 +67,7 @@ export const patchProjectSchema = {
       },
       description: {
         type: 'string',
+        maxLength: 500,
       },
       repository_url: {
         type: 'string',

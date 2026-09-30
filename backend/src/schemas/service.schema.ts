@@ -19,6 +19,7 @@ export const createServiceSchema = {
       },
       description: {
         type: 'string',
+        maxLength: 500,
       },
       port: {
         type: 'integer',
@@ -72,6 +73,7 @@ export const patchServiceSchema = {
       },
       description: {
         type: 'string',
+        maxLength: 500,
       },
       port: {
         type: 'integer',

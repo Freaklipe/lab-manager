@@ -11,6 +11,7 @@ export const createLabSchema = {
       },
       description: {
         type: 'string',
+        maxLength: 500,
       },
     },
   },
@@ -54,6 +55,7 @@ export const patchLabSchema = {
       },
       description: {
         type: 'string',
+        maxLength: 500,
       },
     },
   },
