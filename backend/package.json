@@ -12,7 +12,9 @@
   "scripts": {
     "dev": "node --env-file=../.env --import=tsx src/server.ts",
     "migrate": "node --env-file=../.env scripts/migrate.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --env-file=../.env.test ./node_modules/vitest/vitest.mjs run",
+    "test:watch": "node --env-file=../.env.test ./node_modules/vitest/vitest.mjs",
+    "test:coverage": "node --env-file=../.env.test ./node_modules/vitest/vitest.mjs run --coverage"
   },
   "dependencies": {
     "@fastify/cors": "^11.3.0",
@@ -25,8 +27,10 @@
   "devDependencies": {
     "@types/node": "^26.6.2",
     "@types/pg": "^8.23.1",
+    "@vitest/coverage-v8": "^5.0.3",
     "node-pg-migrate": "^9.0.0",
     "tsx": "^4.23.15",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3"
   }
 }
