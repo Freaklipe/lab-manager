@@ -15,5 +15,36 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql
 
+  backend:
+    build:
+      context: ./backend
+    container_name: lab-manager-backend
+    restart: unless-stopped
+
+    environment:
+      NODE_ENV: production
+
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 3000
+      API_PREFIX: ${API_PREFIX}
+
+      LOG_LEVEL: ${LOG_LEVEL}
+
+      CORS_ORIGIN: ${CORS_ORIGIN}
+      RATE_LIMIT_MAX: ${RATE_LIMIT_MAX}
+      RATE_LIMIT_TIME_WINDOW: ${RATE_LIMIT_TIME_WINDOW}
+
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+    ports:
+      - "3000:3000"
+
+    depends_on:
+      - postgres
+
 volumes:
   postgres_data:

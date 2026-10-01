@@ -11,6 +11,8 @@
   },
   "scripts": {
     "dev": "node --env-file=../.env --import=tsx src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
     "migrate": "node --env-file=../.env scripts/migrate.js",
     "test": "node --env-file=../.env.test ./node_modules/vitest/vitest.mjs run",
     "test:watch": "node --env-file=../.env.test ./node_modules/vitest/vitest.mjs",
