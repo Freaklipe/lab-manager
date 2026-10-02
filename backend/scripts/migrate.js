@@ -1,6 +1,7 @@
 import { spawn } from 'node:child_process';
 
 const {
+  POSTGRES_HOST,
   POSTGRES_USER,
   POSTGRES_PASSWORD,
   POSTGRES_PORT,
@@ -8,6 +9,7 @@ const {
 } = process.env;
 
 const requiredVariables = {
+  POSTGRES_HOST,
   POSTGRES_USER,
   POSTGRES_PASSWORD,
   POSTGRES_PORT,
@@ -26,7 +28,9 @@ const databaseUrl = [
   encodeURIComponent(POSTGRES_USER),
   ':',
   encodeURIComponent(POSTGRES_PASSWORD),
-  '@localhost:',
+  '@',
+  encodeURIComponent(POSTGRES_HOST),
+  ':',
   POSTGRES_PORT,
   '/',
   encodeURIComponent(POSTGRES_DB),

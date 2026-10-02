@@ -29,3 +29,17 @@ USER node
 EXPOSE 3000
 
 CMD ["node", "dist/server.js"]
+
+
+FROM node:24-alpine AS migration
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm ci
+
+COPY migrations ./migrations
+COPY scripts ./scripts
+
+CMD ["node", "scripts/migrate.js", "up"]
