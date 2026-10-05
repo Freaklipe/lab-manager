@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_USER: lab_manager
+          POSTGRES_PASSWORD: lab_manager
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U lab_manager -d postgres"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: backend
+        run: npm ci
+
+      - name: Create test environment
+        shell: bash
+        run: |
+          cat > .env.test <<'EOF'
+          SERVER_HOST=localhost
+          SERVER_PORT=3000
+          API_PREFIX=/api
+
+          LOG_LEVEL=silent
+
+          CORS_ORIGIN=http://localhost:4200
+          RATE_LIMIT_MAX=100
+          RATE_LIMIT_TIME_WINDOW=1 minute
+
+          POSTGRES_HOST=localhost
+          POSTGRES_DB=lab_manager_test
+          POSTGRES_USER=lab_manager
+          POSTGRES_PASSWORD=lab_manager
+          POSTGRES_PORT=5432
+          EOF
+
+      - name: Setup test database
+        working-directory: backend
+        run: npm run test:setup
+
+      - name: Run tests
+        working-directory: backend
+        run: npm test
+
+      - name: Build
+        working-directory: backend
+        run: npm run build
