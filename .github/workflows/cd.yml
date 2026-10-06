@@ -19,8 +19,12 @@ jobs:
           echo "Conclusion: ${{ github.event.workflow_run.conclusion }}"
           exit 1
 
+      - name: Checkout tested commit
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
       - name: Show deployment information
-        if: ${{ github.event.workflow_run.conclusion == 'success' }}
         run: |
           echo "CD triggered by CI"
           echo "CI conclusion: ${{ github.event.workflow_run.conclusion }}"
@@ -28,3 +32,4 @@ jobs:
           echo "Runner: $RUNNER_NAME"
           echo "Host: $(hostname)"
           echo "Architecture: $(uname -m)"
+          echo "Workspace: $GITHUB_WORKSPACE"
