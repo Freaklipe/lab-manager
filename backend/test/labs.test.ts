@@ -63,7 +63,7 @@ describe('Labs API', () => {
       url: `/api/labs/${lab.id}`,
     });
 
-    expect(response.statusCode).toBe(201);
+    expect(response.statusCode).toBe(200);
 
     expect(response.json()).toMatchObject({
       id: lab.id,
