@@ -7,17 +7,16 @@ on:
     types:
       - completed
 
-  workflow_dispatch:
-
 jobs:
   deploy:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: [self-hosted, Linux, ARM64]
 
     steps:
       - name: Show deployment information
         run: |
           echo "CD triggered by CI"
+          echo "Event: ${{ github.event_name }}"
+          echo "CI conclusion: ${{ github.event.workflow_run.conclusion }}"
           echo "Commit: ${{ github.event.workflow_run.head_sha }}"
           echo "Runner: $RUNNER_NAME"
           echo "Host: $(hostname)"
