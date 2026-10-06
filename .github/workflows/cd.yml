@@ -78,3 +78,31 @@ jobs:
           echo
           echo "Git commit deployed:"
           git -C "$GITHUB_WORKSPACE" rev-parse HEAD
+
+      - name: Deploy with Docker Compose
+        working-directory: /home/freakipe/lab-manager
+        run: |
+          docker compose up -d --build
+
+      - name: Show Docker Compose status
+        working-directory: /home/freakipe/lab-manager
+        run: |
+          docker compose ps
+
+      - name: Verify application health
+        run: |
+          echo "Checking application health..."
+
+          for i in {1..12}; do
+            if curl --fail --silent http://localhost:3000/api/health; then
+              echo
+              echo "Application is healthy."
+              exit 0
+            fi
+
+            echo "Application not ready yet. Attempt $i/12..."
+            sleep 5
+          done
+
+          echo "ERROR: Application health check failed."
+          exit 1
