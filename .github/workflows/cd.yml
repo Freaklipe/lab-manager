@@ -33,3 +33,23 @@ jobs:
           echo "Host: $(hostname)"
           echo "Architecture: $(uname -m)"
           echo "Workspace: $GITHUB_WORKSPACE"
+
+      - name: Sync application files
+        run: |
+          rsync -av --delete \
+            --exclude='.env' \
+            "$GITHUB_WORKSPACE/" \
+            "/home/freakipe/lab-manager/"
+
+      - name: Verify production files
+        run: |
+          echo "Production directory:"
+          ls -la /home/freakipe/lab-manager
+
+          echo
+          echo "Production environment file:"
+          ls -l /home/freakipe/lab-manager/.env
+
+          echo
+          echo "Git commit deployed:"
+          git -C "$GITHUB_WORKSPACE" rev-parse HEAD
