@@ -34,10 +34,17 @@ jobs:
           echo "Architecture: $(uname -m)"
           echo "Workspace: $GITHUB_WORKSPACE"
 
+      - name: Clean Git metadata from production
+        run: |
+          rm -rf /home/freakipe/lab-manager/.git
+          rm -rf /home/freakipe/lab-manager/.github
+
       - name: Sync application files
         run: |
           rsync -av --delete \
             --exclude='.env' \
+            --exclude='.git/' \
+            --exclude='.github/' \
             "$GITHUB_WORKSPACE/" \
             "/home/freakipe/lab-manager/"
 
@@ -49,6 +56,24 @@ jobs:
           echo
           echo "Production environment file:"
           ls -l /home/freakipe/lab-manager/.env
+
+          echo
+          echo "Git metadata check:"
+          if [ -d "/home/freakipe/lab-manager/.git" ]; then
+            echo "ERROR: .git exists in production"
+            exit 1
+          else
+            echo ".git not present"
+          fi
+
+          echo
+          echo "GitHub workflow metadata check:"
+          if [ -d "/home/freakipe/lab-manager/.github" ]; then
+            echo "ERROR: .github exists in production"
+            exit 1
+          else
+            echo ".github not present"
+          fi
 
           echo
           echo "Git commit deployed:"
