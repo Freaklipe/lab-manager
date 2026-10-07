@@ -61,6 +61,8 @@ jobs:
           POSTGRES_USER=lab_manager
           POSTGRES_PASSWORD=lab_manager
           POSTGRES_PORT=5432
+
+          APP_COMMIT=${GITHUB_SHA::7}
           EOF
 
       - name: Setup test database

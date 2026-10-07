@@ -8,6 +8,7 @@ import { loggerConfig } from './config/logger.js';
 
 import { errorHandler } from './errors/error.handler.js';
 import { healthRoutes } from './routes/health.routes.js';
+import { versionRoutes } from './routes/version.routes.js';
 import { labRoutes } from './routes/lab.routes.js';
 import { serverRoutes } from './routes/server.routes.js';
 import { serviceRoutes } from './routes/service.routes.js';
@@ -40,6 +41,10 @@ await server.register(rateLimit, {
 server.setErrorHandler(errorHandler);
 
 await server.register(healthRoutes, {
+  prefix,
+});
+
+await server.register(versionRoutes, {
   prefix,
 });
 
