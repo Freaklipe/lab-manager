@@ -82,7 +82,12 @@ jobs:
       - name: Deploy with Docker Compose
         working-directory: /home/freakipe/lab-manager
         run: |
-          docker compose up -d --build
+          export BACKEND_VERSION="${{ github.event.workflow_run.head_sha }}"
+          BACKEND_VERSION="${BACKEND_VERSION:0:7}"
+
+          echo "Backend image tag: ${BACKEND_VERSION}"
+
+          BACKEND_VERSION="$BACKEND_VERSION" docker compose up -d --build
 
       - name: Show Docker Compose status
         working-directory: /home/freakipe/lab-manager
