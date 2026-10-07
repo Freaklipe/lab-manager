@@ -55,6 +55,8 @@ services:
       SERVER_PORT: 3000
       API_PREFIX: ${API_PREFIX}
 
+      APP_COMMIT: ${APP_COMMIT}
+
       LOG_LEVEL: ${LOG_LEVEL}
 
       CORS_ORIGIN: ${CORS_ORIGIN}

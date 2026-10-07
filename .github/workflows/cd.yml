@@ -84,10 +84,12 @@ jobs:
         run: |
           export BACKEND_VERSION="${{ github.event.workflow_run.head_sha }}"
           BACKEND_VERSION="${BACKEND_VERSION:0:7}"
+          export APP_COMMIT="$BACKEND_VERSION"
 
           echo "Backend image tag: ${BACKEND_VERSION}"
+          echo "Application commit: ${APP_COMMIT}"
 
-          BACKEND_VERSION="$BACKEND_VERSION" docker compose up -d --build
+          BACKEND_VERSION="$BACKEND_VERSION" APP_COMMIT="$APP_COMMIT" docker compose up -d --build
 
       - name: Show Docker Compose status
         working-directory: /home/freakipe/lab-manager
