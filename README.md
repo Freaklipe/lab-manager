@@ -30,3 +30,4 @@ Proyecto orientado al aprendizaje práctico de:
 - Seguridad
 
 Etapa 14 - prueba de flujo CI/CD por ramas.
+Etapa 14 - prueba final de protección CI/CD.
