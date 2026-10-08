@@ -28,3 +28,5 @@ Proyecto orientado al aprendizaje práctico de:
 - Deploy
 - Observabilidad
 - Seguridad
+
+Etapa 14 - prueba de flujo CI/CD por ramas.
